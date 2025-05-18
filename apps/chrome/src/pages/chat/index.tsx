@@ -25,6 +25,8 @@ import Styles from './index.module.less';
 
 import type { SetAppMode } from '@/entrypoints/sidepanel/App';
 import type { Message } from '@/store/chatSlice';
+import { ChevronDownIcon } from 'tdesign-icons-react';
+import { useScrollToBottom } from './use/useScrollToBottom';
 
 const ChatPage: React.FC<{ setAppMode: SetAppMode }> = ({ setAppMode }) => {
   // hooks
@@ -76,12 +78,26 @@ const ChatPage: React.FC<{ setAppMode: SetAppMode }> = ({ setAppMode }) => {
     return () => chrome.runtime.onMessage.removeListener(handleContextMenus);
   }, [ollamaModelParams]);
 
+  const { containerRef, showScrollButton, scrollToBottom, checkScrollPosition } =
+    useScrollToBottom('.ant-bubble-list');
   return (
     <main>
       <Layout className={Styles.layout}>
         <HeaderSection />
-        <Layout.Content className={Styles.content}>
+        <Layout.Content
+          className={Styles.content}
+          ref={containerRef}
+          onScroll={checkScrollPosition}
+        >
           <ChatContent />
+          {showScrollButton && (
+            <ChevronDownIcon
+              className={`${Styles.scrollButton} ${showScrollButton ? Styles.visible : ''}`}
+              onClick={scrollToBottom}
+              aria-label="Scroll to bottom"
+              size={30}
+            ></ChevronDownIcon>
+          )}
         </Layout.Content>
         <footer className={Styles.footer}>
           <ChatSender />

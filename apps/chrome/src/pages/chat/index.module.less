@@ -21,10 +21,47 @@
 .content {
   flex: 1;
   padding: 0 var(--ant-padding-sm);
+  position: relative;
   .bubbleList {
     padding: var(--ant-padding-sm) 0;
   }
 }
+
+.scrollButton {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #6c757d; // 中性灰色
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover {
+    background: #5a6268; // 深一点的灰色
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .userContentPre {
   white-space: pre-wrap;
   word-wrap: break-word;

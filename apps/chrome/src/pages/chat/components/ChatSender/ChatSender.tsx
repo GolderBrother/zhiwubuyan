@@ -8,7 +8,6 @@ import {
   Filter2Icon,
   Filter3Icon,
   CloseIcon,
-  // StopCircleStrokeIcon,
 } from 'tdesign-icons-react';
 import { useAppSelector, useAppDispatch } from '@/hooks/useStore';
 import { setIsViewHistoryMode } from '@/store/historySlice';
@@ -42,7 +41,7 @@ const ChatSender: FC = () => {
       onTrigger(false);
     }
     setUserContent(nextVal);
-  }
+  };
   const handleSubmit = useCallback(() => {
     dispatch(setIsViewHistoryMode(false));
     setUserContent('');
@@ -65,7 +64,7 @@ const ChatSender: FC = () => {
 
   const { isListening, toggleListening, error } = useSpeechRecognition((text) => {
     console.log('useSpeechRecognition text', text);
-    setUserContent(text);
+    setUserContent(userContent + text);
   });
   const [openFilePanel, setOpenFilePanel] = useState(false);
   const headerNode = (
@@ -131,10 +130,12 @@ const ChatSender: FC = () => {
             <Sender
               loading={responseStatus === 'outputting'}
               submitType={submitType}
-              allowSpeech={!isListening}
-              // allowSpeech
+              allowSpeech={true}
               value={userContent}
-              onChange={(nextVal) => handleChange(nextVal, onTrigger)}
+              onChange={(nextVal) => {
+                console.log('onChange nextVal', nextVal);
+                handleChange(nextVal, onTrigger)
+              }}
               onKeyDown={onKeyDown}
               onSubmit={() => handleSubmit()}
               onCancel={() => abortControl()}
@@ -144,17 +145,19 @@ const ChatSender: FC = () => {
                 const { ClearButton, SendButton, LoadingButton, SpeechButton } = components;
                 return (
                   <Flex justify="end" align="center">
-                    <Button style={iconStyle} type="text" icon={<LinkOutlined />} onClick={() => setOpenFilePanel(true)} />
+                    <Button
+                      style={iconStyle}
+                      type="text"
+                      icon={<LinkOutlined />}
+                      onClick={() => setOpenFilePanel(true)}
+                    />
                     <Tooltip title="清空">
                       <ClearButton />
                     </Tooltip>
-                    <Tooltip title="语音输入">
-                      <SpeechButton
-                        style={iconStyle}
-                        onClick={toggleListening}
-                      />
+                    <Tooltip title={isListening ? '停止语音输入' : '语音输入'}>
+                      <SpeechButton style={iconStyle} onClick={toggleListening} />
                     </Tooltip>
-                    <Divider type="vertical" style={{marginRight: 15}} />
+                    <Divider type="vertical" style={{ marginRight: 15 }} />
                     {responseStatus !== 'end' ? (
                       <LoadingButton type="default" />
                     ) : (

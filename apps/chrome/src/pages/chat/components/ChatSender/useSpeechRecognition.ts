@@ -14,7 +14,18 @@ export const useSpeechRecognition = (onResult?: (text: string) => void) => {
   const recognitionRef = useRef<any>(null);
 
   const initRecognition = () => {
-    if ('webkitSpeechRecognition' in window) {
+    if (!('webkitSpeechRecognition' in window)) {
+      setError('该浏览器不支持语音识别功能');
+      return;
+    }
+
+    // 检查麦克风权限
+    navigator.permissions.query({ name: 'microphone' as any }).then((permissionStatus) => {
+      if (permissionStatus.state === 'denied') {
+        setError('请允许麦克风权限以使用语音识别功能');
+        return;
+      }
+
       recognitionRef.current = new (window as any).webkitSpeechRecognition();
       if (!recognitionRef.current) return;
 
@@ -44,9 +55,7 @@ export const useSpeechRecognition = (onResult?: (text: string) => void) => {
         setError(`语音识别错误: ${event.error}`);
         setIsListening(false);
       };
-    } else {
-      setError('该浏览器不支持语音识别功能');
-    }
+    });
   };
 
   const toggleListening = () => {
@@ -56,12 +65,27 @@ export const useSpeechRecognition = (onResult?: (text: string) => void) => {
     }
 
     if (!isListening) {
-      try {
-        recognitionRef.current.start();
-      } catch (err) {
-        console.error('启动语音识别失败:', err);
-        setError('启动语音识别失败');
-      }
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then(() => {
+          recognitionRef.current.start();
+        })
+        .catch((err) => {
+          // console.error('启动语音识别失败:', err);
+          // setError('启动语音识别失败');
+          console.error('麦克风权限被拒绝:', err);
+          // 添加重置逻辑
+          if (err.name === 'NotAllowedError') {
+            if (confirm('麦克风权限被拒绝，是否前往设置页面？')) {
+              chrome.tabs.create({
+                // url: 'chrome://settings/content/microphone',
+                url: 'chrome://settings/content/siteDetails?site=chrome-extension%3A%2F%2Fkbploeoeoalkicbddgopdndifjdkolcn'
+              });
+            }
+          } else {
+            setError('请允许麦克风权限以使用语音识别');
+          }
+        });
     } else {
       recognitionRef.current.stop();
     }
@@ -77,5 +101,5 @@ export const useSpeechRecognition = (onResult?: (text: string) => void) => {
     };
   }, []);
 
-  return { isListening, toggleListening, error };
+  return { isListening, setIsListening, toggleListening, error };
 };

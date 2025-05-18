@@ -21,9 +21,9 @@ import LogoIcon from '/logo.svg';
 import pkg from '../../../chrome/package.json';
 
 const chromeStoreUrl = 'https://chromewebstore.google.com';
-const githubRepo = 'https://github.com/GolderBrother/intellichat';
-const githubIssues = 'https://github.com/GolderBrother/intellichat/issues';
-const license = 'https://github.com/GolderBrother/intellichat?tab=MIT-1-ov-file';
+const githubRepo = 'https://github.com/GolderBrother/zhiwubuyan';
+const githubIssues = 'https://github.com/GolderBrother/zhiwubuyan/issues';
+const license = 'https://github.com/GolderBrother/zhiwubuyan?tab=MIT-1-ov-file';
 
 export default function HomePage() {
   return (
