@@ -105,7 +105,9 @@ export default function HomePage() {
 
           {/* 示例图片区域 */}
           <div className="mt-16 border rounded-xl p-2 max-w-4xl mx-auto shadow-lg">
-            <img src="/intro.png" height="100%" />
+            <img src="/intro1.png" height="100%" />
+            <img src="/intro2.png" height="100%" />
+            <img src="/intro3.png" height="100%" />
           </div>
         </section>
 
