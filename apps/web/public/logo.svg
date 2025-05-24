@@ -1,7 +1,10 @@
-<svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="50" cy="50" r="50" fill="black"/>
-    <circle cx="50" cy="50" r="40" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- 外圆：加粗实线，增强稳重感 -->
+  <circle cx="12" cy="12" r="10" fill="white" stroke="#000" stroke-width="2.5" />
   
-    <circle cx="50" cy="50" r="30" fill="black"/>
-    <circle cx="50" cy="50" r="20" fill="white"/>
+  <!-- 内圆：加粗虚线，扩大比例 -->
+  <circle cx="12" cy="12" r="8" fill="white" stroke="#000" stroke-width="2" stroke-dasharray="4 3" /> <!-- 半径从6.5→8，占比更大 -->
+  
+  <!-- 中心圆环：替代圆点，提升科技感 -->
+  <circle cx="12" cy="12" r="1.8" fill="white" stroke="#000" stroke-width="2" /> <!-- 空心圆环替代实心点 -->
 </svg>
